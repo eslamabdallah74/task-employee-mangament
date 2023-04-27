@@ -7,7 +7,7 @@ mix.js([
     'resources/js/demo.min.js',
     'resources/js/tabler.esm.min.js',
     'resources/js/tabler.min.js',
-    ], 'public/js')
+], 'public/js')
     .vue()
     .webpackConfig({
         resolve: {
@@ -17,3 +17,7 @@ mix.js([
             },
         },
     });
+
+mix.copy('node_modules/bootstrap/dist/fonts', 'public/fonts');
+mix.copy('node_modules/bootstrap/dist/img', 'public/img');
+

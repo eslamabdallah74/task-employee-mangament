@@ -7,7 +7,7 @@
     <body>
         <div id="app">
             <Vue-Header></Vue-Header>
-            <Vue-Table></Vue-Table>
+            @yield('content')
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
