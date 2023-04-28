@@ -1,6 +1,8 @@
 import EmployeeList from './components/EmployeeList.vue';
 import AddEmployee from './components/AddEmployee.vue';
 import EditEmployee from './components/EditEmployee.vue';
+import EmployeeShift from './components/EmployeeShift.vue';
+
 
 const routes = [
   {
@@ -17,7 +19,12 @@ const routes = [
     path: '/employees/:id/edit',
     name: 'editEmployee',
     component: EditEmployee
-  }
+  },
+  {
+    path: '/employees/:id/shift',
+    name: 'employeeShift',
+    component: EmployeeShift
+  },
 ];
 
 export default routes;

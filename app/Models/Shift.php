@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Shift extends Model
 {
     use HasFactory;
-    public $timestamps = false;
     protected $guarded = [];
 
-
-    public function employee()
+    public function shift()
     {
-        return $this->hasOne(Employee::class);
+        return $this->belongsTo(Shift::class);
     }
 }
