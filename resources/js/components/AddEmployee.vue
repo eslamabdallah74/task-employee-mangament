@@ -11,11 +11,14 @@
                                     <label class="form-label">Name</label>
                                     <input v-model="name" type="text" class="form-control" name="example-text-input"
                                         placeholder="Employee Name">
+                                    <div v-if="errors.name" class="error">{{ errors.name[0] }}</div>
+
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Job ID</label>
                                     <input v-model="jobId" type="number" class="form-control" name="example-text-input"
                                         placeholder="Employee ID">
+                                    <div v-if="errors.job_id" class="error">{{ errors.job_id[0] }}</div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Hire Date</label>
@@ -104,16 +107,24 @@
                                                 <option value="1989" selected>1989</option>
                                             </select>
                                         </div>
+                                        <div v-if="errors.hire_date" class="error">{{ errors.hire_date[0] }}</div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="exampleFormControlFile1">Image</label>
                                     <input @change="onFileSelected" type="file" class="form-control-file"
                                         id="exampleFormControlFile1">
+                                    <div v-if="errors.image" class="error">{{ errors.image[0] }}</div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <div class="my-2">
+                                    <button style="margin-right: 1rem;" class="btn btn-bitbucket" type="submit">Save and
+                                        Exit</button>
+                                    <button class="btn btn-azure" type="button" @click="saveAndAddMore">Save and Add
+                                        More</button>
+                                </div>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -133,10 +144,15 @@ export default {
             month: '',
             day: '',
             year: '',
+            errors: {},
         };
     },
     methods: {
         async submit() {
+            if (!this.month || !this.day || !this.year) {
+                this.errors.hire_date = ['Please select a valid hire date'];
+                return;
+            }
             const formData = {
                 name: this.name,
                 job_id: this.jobId,
@@ -150,8 +166,37 @@ export default {
                     }
                 });
                 console.log(response.data);
+                this.$router.push('/');
             } catch (error) {
-                console.log(error.response.data);
+                this.errors = error.response.data.errors;
+            }
+        },
+        async saveAndAddMore() {
+            if (!this.month || !this.day || !this.year) {
+                this.errors.hire_date = ['Please select a valid hire date'];
+                return;
+            }
+            const formData = {
+                name: this.name,
+                job_id: this.jobId,
+                image: this.image,
+                hire_date: `${this.year}-${this.month}-${this.day}`,
+            };
+            try {
+                const response = await axios.post('api/employees', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                console.log(response.data);
+                this.name = '';
+                this.jobId = '';
+                this.image = '';
+                this.month = '';
+                this.day = '';
+                this.year = '';
+            } catch (error) {
+                this.errors = error.response.data.errors;
             }
         },
         onFileSelected(event) {

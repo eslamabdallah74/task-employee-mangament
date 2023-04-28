@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\addEmployeeRequest;
 use App\Models\Employee;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -20,31 +22,16 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(addEmployeeRequest $request)
     {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'job_id' => 'required|numeric',
-            'image' => 'required|image|max:2048',
-            'hire_date' => 'required',
-        ]);
-
-        // Save the employee's image to the storage directory
-        $image = $validatedData['image']->store('public/images');
-        $imageName = basename($image);
-        // Create a new Employee model instance with the validated data
+        $image    = Image::addImage($request);
         $employee = new Employee([
-            'name'              => $validatedData['name'],
-            'job_id'            => $validatedData['job_id'],
-            'image'             => $imageName,
-            'starting_date'     => $validatedData['hire_date'],
+            'name'              => $request['name'],
+            'job_id'            => $request['job_id'],
+            'image'             => $image,
+            'starting_date'     => $request['hire_date'],
         ]);
-
-        // Save the employee to the database
         $employee->save();
-
-        // Return the new employee as a JSON response
         return response()->json($employee);
     }
 

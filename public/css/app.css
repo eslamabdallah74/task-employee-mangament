@@ -22,3 +22,8 @@
 .nav-item a .nav-link-title:hover, a:hover {
     text-decoration: none;
 }
+
+.error{
+    color: red;
+    margin: 0.4rem 0 0 0;
+}
