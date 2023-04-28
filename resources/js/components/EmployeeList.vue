@@ -27,6 +27,8 @@
                                                 <th>Name</th>
                                                 <th>Job ID</th>
                                                 <th>Work starting date</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -38,6 +40,19 @@
                                                 <td>{{ employee.name }}</td>
                                                 <td>#{{ employee.job_id }}</td>
                                                 <td>{{ employee.starting_date }}</td>
+                                                <td>
+                                                    <router-link
+                                                        :to="{ name: 'editEmployee', params: { id: employee.id } }">
+                                                        <span class="btn btn-cyan">
+                                                            Edit
+                                                        </span>
+                                                    </router-link>
+
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger"
+                                                        @click="deleteEmployee(employee.id)">Delete</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -68,6 +83,18 @@ export default {
             this.employees = response.data;
         });
     },
+    methods: {
+        async deleteEmployee(employeeId) {
+            if (window.confirm('Are you sure you want to delete this employee?')) {
+                try {
+                    await axios.delete(`/api/employees/${employeeId}`);
+                    this.employees = this.employees.filter((employee) => employee.id !== employeeId); // refresh
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+    }
 };
 
 </script>

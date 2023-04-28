@@ -3,13 +3,13 @@
         <div class="page-body">
             <div class="container-xl">
                 <div class="row row-cards">
-                    <form @submit.prevent="submit" enctype="multipart/form-data">
+                    <form @submit.prevent="updateEmployee" enctype="multipart/form-data">
                         <div class="col-lg-12">
-                            <h1>Add Employee</h1>
+                            <h1>Edit Employee</h1>
                             <div class="card p-3">
                                 <div class="mb-3">
                                     <label class="form-label">Name</label>
-                                    <input v-model="name" type="text" class="form-control" name="example-text-input"
+                                    <input name="name" v-model="name" type="text" class="form-control"
                                         placeholder="Employee Name">
                                     <div v-if="errors.name" class="error">{{ errors.name[0] }}</div>
 
@@ -24,7 +24,7 @@
                                     <label class="form-label">Hire Date</label>
                                     <div class="row g-2">
                                         <div class="col-5">
-                                            <select name="user[month]" v-model="month" class="form-select">
+                                            <select v-model="month" class="form-select">
                                                 <option value="">Month</option>
                                                 <option value="1">January</option>
                                                 <option value="2">February</option>
@@ -41,7 +41,7 @@
                                             </select>
                                         </div>
                                         <div class="col-3">
-                                            <select name="user[day]" v-model="day" class="form-select">
+                                            <select v-model="day" class="form-select">
                                                 <option value="">Day</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -77,7 +77,7 @@
                                             </select>
                                         </div>
                                         <div class="col-4">
-                                            <select  v-model="year" class="form-select">
+                                            <select v-model="year" class="form-select">
                                                 <option value="">Year</option>
                                                 <option value="2023">2023</option>
                                                 <option value="2022">2022</option>
@@ -121,15 +121,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="exampleFormControlFile1">Image</label>
-                                    <input @change="onFileSelected" type="file" class="form-control-file"
-                                        id="exampleFormControlFile1">
+                                    <div class="image my-2">
+                                        <img :src="`/images/${image}`" alt="Employee Image" width="250">
+                                    </div>
+                                    <input @change="updateEmployeeImage" type="file" class="form-control-file"
+                                        id="exampleFormControl">
                                     <div v-if="errors.image" class="error">{{ errors.image[0] }}</div>
                                 </div>
                                 <div class="my-2">
-                                    <button style="margin-right: 1rem;" class="btn btn-bitbucket" type="submit">Save and
-                                        Exit</button>
-                                    <button class="btn btn-azure" type="button" @click="saveAndAddMore">Save and Add
-                                        More</button>
+                                    <button style="margin-right: 1rem;" class="btn btn-bitbucket"
+                                        type="submit">Edit</button>
                                 </div>
                             </div>
                         </div>
@@ -145,72 +146,81 @@
 import axios from 'axios';
 
 export default {
+    name: 'EditEmployee',
     data() {
         return {
+            employee: null,
             name: '',
             jobId: '',
-            image: '',
+            image: null,
+            hireDate: '',
+            year: '',
             month: '',
             day: '',
-            year: '',
             errors: {},
         };
     },
     methods: {
-        async submit() {
-            if (!this.month || !this.day || !this.year) {
-                this.errors.hire_date = ['Please select a valid hire date'];
-                return;
-            }
+        fetchEmployee() {
+            const employeeId = this.$route.params.id;
+            axios.get(`/api/employees/${employeeId}`, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then((response) => {
+                    this.employee = response.data;
+                    this.name = this.employee.name;
+                    this.jobId = this.employee.job_id;
+                    this.image = this.employee.image;
+                    this.hireDate = this.employee.starting_date;
+
+                    const dateObj = new Date(this.hireDate);
+                    this.month = dateObj.getMonth() + 1;
+                    this.day = dateObj.getDate();
+                    this.year = dateObj.getFullYear();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        updateEmployee() {
+            const employeeId = this.$route.params.id;
+
             const formData = {
                 name: this.name,
                 job_id: this.jobId,
-                image: this.image,
                 hire_date: `${this.year}-${this.month}-${this.day}`,
             };
+            axios.put(`/api/employees/${employeeId}`, formData)
+                .then(() => {
+                    this.$router.push('/');
+                })
+                .catch((error) => {
+                    this.errors = error.response.data.errors;
+                });
+        },
+        async updateEmployeeImage(event) {
+            const employeeId = this.$route.params.id;
+            console.log(employeeId)
+
+            const formData = new FormData();
+            formData.append('image', event.target.files[0]);
             try {
-                const response = await axios.post('api/employees', formData, {
+                const response = await axios.post(`/api/employees/updateImage/${employeeId}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                console.log(response.data);
-                this.$router.push('/');
+                mounted()
             } catch (error) {
                 this.errors = error.response.data.errors;
             }
         },
-        async saveAndAddMore() {
-            if (!this.month || !this.day || !this.year) {
-                this.errors.hire_date = ['Please select a valid hire date'];
-                return;
-            }
-            const formData = {
-                name: this.name,
-                job_id: this.jobId,
-                image: this.image,
-                hire_date: `${this.year}-${this.month}-${this.day}`,
-            };
-            try {
-                const response = await axios.post('api/employees', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                this.name = '';
-                this.jobId = '';
-                this.image = '';
-                this.month = '';
-                this.day = '';
-                this.year = '';
-            } catch (error) {
-                this.errors = error.response.data.errors;
-            }
-        },
-        onFileSelected(event) {
-            this.image = event.target.files[0];
-        },
+    },
+
+    mounted() {
+        this.fetchEmployee();
     },
 };
 </script>
-
