@@ -207,7 +207,7 @@ export default {
             const formData = new FormData();
             formData.append('image', event.target.files[0]);
             try {
-                const response = await axios.post(`/api/employees/updateImage/${employeeId}`, formData, {
+                const response = await axios.post(`/api/updateImage/${employeeId}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

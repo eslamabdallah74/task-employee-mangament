@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/employees',EmployeeController::class);
-Route::post('/employees/updateImage/{id}',[EmployeeController::class,'updateImage']);
+
+Route::post('/updateImage/{id}',[EmployeeController::class,'updateImage']);

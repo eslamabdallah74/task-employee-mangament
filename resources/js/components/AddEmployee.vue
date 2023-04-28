@@ -169,7 +169,7 @@ export default {
                 hire_date: `${this.year}-${this.month}-${this.day}`,
             };
             try {
-                const response = await axios.post('api/employees', formData, {
+                const response = await axios.post('/api/employees', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -192,7 +192,7 @@ export default {
                 hire_date: `${this.year}-${this.month}-${this.day}`,
             };
             try {
-                const response = await axios.post('api/employees', formData, {
+                const response = await axios.post(`/api/employees`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

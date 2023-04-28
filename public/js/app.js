@@ -17982,7 +17982,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               };
               _context.prev = 4;
               _context.next = 7;
-              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('api/employees', formData, {
+              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/employees', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -18026,7 +18026,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               };
               _context2.prev = 4;
               _context2.next = 7;
-              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('api/employees', formData, {
+              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/employees", formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -18141,7 +18141,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               formData.append('image', event.target.files[0]);
               _context.prev = 4;
               _context.next = 7;
-              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/employees/updateImage/".concat(employeeId), formData, {
+              return axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/updateImage/".concat(employeeId), formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
