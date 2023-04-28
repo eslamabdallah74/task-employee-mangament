@@ -2,6 +2,7 @@ import EmployeeList from './components/EmployeeList.vue';
 import AddEmployee from './components/AddEmployee.vue';
 import EditEmployee from './components/EditEmployee.vue';
 import EmployeeShift from './components/EmployeeShift.vue';
+import ShiftSchedule from './components/ShiftSchedule.vue';
 
 
 const routes = [
@@ -21,9 +22,14 @@ const routes = [
     component: EditEmployee
   },
   {
-    path: '/employees/:id/shift',
+    path: '/employees/shift',
     name: 'employeeShift',
     component: EmployeeShift
+  },
+  {
+    path: '/employees/:id/shift-schedule',
+    name: 'shiftSchedule',
+    component: ShiftSchedule
   },
 ];
 

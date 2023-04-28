@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/employees',EmployeeController::class);
+Route::post('/check_in/{id}',[AttendanceController::class,'checkIn']);
+Route::post('/check_out/{id}',[AttendanceController::class,'checkOut']);
+
 
 Route::post('/updateImage/{id}',[EmployeeController::class,'updateImage']);
+Route::post('/addShift',[ShiftController::class,'addShift']);
+Route::get('/attendances/{id}', [AttendanceController::class,'index']);

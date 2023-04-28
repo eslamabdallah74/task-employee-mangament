@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+
 import routes from './routes';
-import axios from 'axios'; 
+import './select2-init.js';
 
 import VueHeader from './components/header.vue';
 import VueFooter from './components/footer.vue';
@@ -22,3 +23,5 @@ const app = createApp(App,{
 app.use(router);
 
 app.mount('#app');
+
+

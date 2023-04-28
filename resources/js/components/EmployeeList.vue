@@ -7,8 +7,9 @@
                     <div class="row g-2 align-items-center">
                         <div class="col">
                             <h2 class="page-title">
-                                Tables
+                                Employees
                             </h2>
+                            <div v-if="message" class="alert alert-info my-2">{{ message }}</div>
                         </div>
                     </div>
                 </div>
@@ -27,6 +28,9 @@
                                                 <th>Name</th>
                                                 <th>Job ID</th>
                                                 <th>Work starting date</th>
+                                                <th>Check In</th>
+                                                <th>Check Out</th>
+                                                <th>Shift Schedule</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
                                             </tr>
@@ -41,13 +45,25 @@
                                                 <td>#{{ employee.job_id }}</td>
                                                 <td>{{ employee.starting_date }}</td>
                                                 <td>
+                                                    <button class="btn btn-primary" @click="checkIn(employee.id)">Check
+                                                        In</button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-warning" @click="checkOut(employee.id)">Check
+                                                        Out</button>
+                                                </td>
+                                                <td>
+                                                    <router-link :to="{ name: 'shiftSchedule', params: { id: employee.id } }">
+                                                        Visit Employee Shift Schedule
+                                                    </router-link>
+                                                </td>
+                                                <td>
                                                     <router-link
                                                         :to="{ name: 'editEmployee', params: { id: employee.id } }">
                                                         <span class="btn btn-cyan">
                                                             Edit
                                                         </span>
                                                     </router-link>
-
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-danger"
@@ -76,6 +92,7 @@ export default {
     data() {
         return {
             employees: [],
+            message: '',
         };
     },
     created() {
@@ -93,7 +110,26 @@ export default {
                     console.error(error);
                 }
             }
-        }
+        },
+        async checkIn(employeeId) {
+            await axios.post(`/api/check_in/${employeeId}`)
+                .then(response => {
+                    this.message = response.data.message;
+                })
+                .catch(error => {
+                    this.message = error.response.data.message;
+                });
+        },
+        async checkOut(employeeId) {
+            await axios.post(`/api/check_out/${employeeId}`)
+                .then(response => {
+                    this.message = response.data.message;
+                })
+                .catch(error => {
+                    this.message = error.response.data.message;
+                });
+        },
+
     }
 };
 

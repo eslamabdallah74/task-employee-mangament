@@ -11,9 +11,13 @@ class Employee extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-
-    public function employee()
+    public function shift()
     {
-        return $this->hasOne(Employee::class);
+        return $this->hasOne(Shift::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
     }
 }
