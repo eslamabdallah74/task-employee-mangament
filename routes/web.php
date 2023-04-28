@@ -14,7 +14,8 @@ use \App\Http\Controllers\EmployeeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::resource('/employees',EmployeeController::class);
+
+
+Route::get('/{any}', function () {
+    return view('app');
+})->where('any', '.*');

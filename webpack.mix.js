@@ -18,6 +18,4 @@ mix.js([
         },
     });
 
-mix.copy('node_modules/bootstrap/dist/fonts', 'public/fonts');
-mix.copy('node_modules/bootstrap/dist/img', 'public/img');
 

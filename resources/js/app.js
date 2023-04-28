@@ -1,18 +1,24 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
-
 import { createApp } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import routes from './routes';
+import axios from 'axios'; 
 
 import VueHeader from './components/header.vue';
-import VueTable from './components/table.vue';
 import VueFooter from './components/footer.vue';
+import App from './App.vue'
 
-const app = createApp({
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+const app = createApp(App,{
   components: {
     VueHeader,
-    VueTable,
     VueFooter
   }
 });
+
+app.use(router);
 
 app.mount('#app');

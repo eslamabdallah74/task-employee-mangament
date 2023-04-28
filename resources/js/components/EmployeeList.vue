@@ -31,18 +31,13 @@
                                         </thead>
                                         <tbody>
                                             <!-- Foreach -->
-                                            <tr>
+                                            <tr v-for="employee in employees" :key="employee.id">
                                                 <td>
-                                                    <a href="#">IMG</a>
+                                                    <img :src="`/images/${employee.image}`" alt="Employee Image" width="50">
                                                 </td>
-                                                <td>Paweł Kuna</td>
-                                                <td class="text-muted">
-                                                    #3124521
-                                                </td>
-                                                <td class="text-muted">
-                                                    2022-4-5
-                                                </td>
-
+                                                <td>{{ employee.name }}</td>
+                                                <td>#{{ employee.job_id }}</td>
+                                                <td>{{ employee.starting_date }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -52,7 +47,27 @@
 
                     </div>
                 </div>
-        </div>
+            </div>
 
+        </div>
     </div>
-</div></template>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    name: 'EmployeeList',
+    data() {
+        return {
+            employees: [],
+        };
+    },
+    created() {
+        axios.get('/api/employees').then((response) => {
+            this.employees = response.data;
+        });
+    },
+};
+
+</script>

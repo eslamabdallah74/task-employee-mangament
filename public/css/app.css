@@ -8,3 +8,17 @@
 @import "tabler.min.css";
 @import "tabler.rtl.min.css";
 @import url('https://rsms.me/inter/inter.css');
+
+/* Mine */
+
+.nav-item a {
+    margin: 0 1rem;
+}
+
+.nav-item a .nav-link-title {
+    color: black;
+}
+
+.nav-item a .nav-link-title:hover, a:hover {
+    text-decoration: none;
+}

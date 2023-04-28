@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('name',244);
-            $table->integer('job_id',true);
+            $table->integer('job_id');
             $table->string('image');
             $table->date('starting_date');
-            $table->timestamps();
         });
     }
 
